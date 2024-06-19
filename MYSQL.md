@@ -117,7 +117,7 @@ Dưới đây là cách tối ưu hóa và thiết kế cơ sở dữ liệu qu�
 
 Bảng Thực Thể và Quan Hệ
 1. Bảng Sách (Books)
-sql
+```sql
 Sao chép mã
 CREATE TABLE Books (
     book_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -131,25 +131,25 @@ CREATE TABLE Books (
     FOREIGN KEY (category_id) REFERENCES Categories(category_id),
     FOREIGN KEY (publisher_id) REFERENCES Publishers(publisher_id),
     FOREIGN KEY (library_branch_id) REFERENCES LibraryBranches(branch_id)
-);
+);```
 2. Bảng Thể Loại Sách (Categories)
-sql
+```sql
 Sao chép mã
 CREATE TABLE Categories (
     category_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     total_books INT
-);
+);```
 3. Bảng Nhà Xuất Bản (Publishers)
-sql
+```sql
 Sao chép mã
 CREATE TABLE Publishers (
     publisher_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     address VARCHAR(255)
-);
+);```
 4. Bảng Nhân Viên (Employees)
-sql
+```sql
 Sao chép mã
 CREATE TABLE Employees (
     employee_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -158,9 +158,9 @@ CREATE TABLE Employees (
     contact_info VARCHAR(255),
     id_card_number VARCHAR(20),
     address VARCHAR(255)
-);
+);```
 5. Bảng Người Mượn (Borrowers)
-sql
+```sql
 Sao chép mã
 CREATE TABLE Borrowers (
     borrower_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -169,9 +169,9 @@ CREATE TABLE Borrowers (
     address VARCHAR(255),
     date_of_birth DATE,
     id_card_number VARCHAR(20)
-);
+);```
 6. Bảng Phiếu Mượn Sách (BorrowingRecords)
-sql
+```sql
 Sao chép mã
 CREATE TABLE BorrowingRecords (
     record_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -183,37 +183,36 @@ CREATE TABLE BorrowingRecords (
     borrower_id INT,
     FOREIGN KEY (employee_id) REFERENCES Employees(employee_id),
     FOREIGN KEY (borrower_id) REFERENCES Borrowers(borrower_id)
-);
+);```
 7. Bảng Hóa Đơn Mượn (BorrowingInvoices)
-sql
+```sql
 Sao chép mã
 CREATE TABLE BorrowingInvoices (
     invoice_id INT AUTO_INCREMENT PRIMARY KEY,
     record_id INT,
     total_books INT,
     FOREIGN KEY (record_id) REFERENCES BorrowingRecords(record_id)
-);
+);```
 8. Bảng Danh Sách Mượn (BorrowingList)
-sql
+```sql
 Sao chép mã
 CREATE TABLE BorrowingList (
     list_id INT AUTO_INCREMENT PRIMARY KEY,
     book_id INT,
     quantity INT,
     FOREIGN KEY (book_id) REFERENCES Books(book_id)
-);
+);```
 9. Bảng Thư Viện (LibraryBranches)
-sql
+```sql
 Sao chép mã
 CREATE TABLE LibraryBranches (
     branch_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     address VARCHAR(255),
     contact_info VARCHAR(255)
-);
+);```
 10. Bảng Quan Hệ Thư Viện - Nhân Viên (LibraryBranchEmployees)
-sql
-/
+```sql
 CREATE TABLE LibraryBranchEmployees (
     branch_id INT,
     employee_id INT,
@@ -222,10 +221,9 @@ CREATE TABLE LibraryBranchEmployees (
     PRIMARY KEY (branch_id, employee_id),
     FOREIGN KEY (branch_id) REFERENCES LibraryBranches(branch_id),
     FOREIGN KEY (employee_id) REFERENCES Employees(employee_id)
-);
-/
+);```
 11. Bảng Quan Hệ Thư Viện - Sách (LibraryBranchBooks)
-sql
+```sql
 Sao chép mã
 CREATE TABLE LibraryBranchBooks (
     branch_id INT,
@@ -236,9 +234,9 @@ CREATE TABLE LibraryBranchBooks (
     FOREIGN KEY (branch_id) REFERENCES LibraryBranches(branch_id),
     FOREIGN KEY (book_id) REFERENCES Books(book_id),
     FOREIGN KEY (category_id) REFERENCES Categories(category_id)
-);
+);```
 12. Bảng Quan Hệ Thư Viện - Thể Loại (LibraryBranchCategories)
-sql
+```sql
 Sao chép mã
 CREATE TABLE LibraryBranchCategories (
     branch_id INT,
@@ -247,9 +245,9 @@ CREATE TABLE LibraryBranchCategories (
     PRIMARY KEY (branch_id, category_id),
     FOREIGN KEY (branch_id) REFERENCES LibraryBranches(branch_id),
     FOREIGN KEY (category_id) REFERENCES Categories(category_id)
-);
+);```
 13. Bảng Quan Hệ Thư Viện - Phiếu Mượn (LibraryBranchBorrowingRecords)
-sql
+```sql
 Sao chép mã
 CREATE TABLE LibraryBranchBorrowingRecords (
     branch_id INT,
@@ -260,14 +258,15 @@ CREATE TABLE LibraryBranchBorrowingRecords (
     FOREIGN KEY (branch_id) REFERENCES LibraryBranches(branch_id),
     FOREIGN KEY (borrower_id) REFERENCES Borrowers(borrower_id),
     FOREIGN KEY (record_id) REFERENCES BorrowingRecords(record_id)
-);
+);```
 Chỉ Mục (Indexing)
 Để tăng tốc độ truy vấn, chúng ta có thể tạo thêm các chỉ mục cho các bảng thường xuyên được truy vấn.
 
 Ví Dụ về Chỉ Mục
-sql
+```sql
 Sao chép mã
 CREATE INDEX idx_books_category ON Books(category_id);
 CREATE INDEX idx_books_publisher ON Books(publisher_id);
 CREATE INDEX idx_borrowing_records_employee ON BorrowingRecords(employee_id);
 CREATE INDEX idx_borrowing_records_borrower ON BorrowingRecords(borrower_id);
+```
