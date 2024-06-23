@@ -34,9 +34,9 @@
     
 
 ### nhân viên thư viện 
-    - nhân viên__
+    - nhân viên
         - tên nhan viên 
-        - mã nhân viên
+        - mã nhân viê(khóa chính)
         - chức vụ 
         - thông tin liên lạc 
         - số căn cước công dân 
@@ -46,30 +46,26 @@
 
 ### người mượn 
     - thông tin về người mượn 
-        - số căn cước công dân 
-        - tên người mượn 
-        - thông tin liên lạc
-        - địa chỉ 
-        - mã phiếu mượn 
+        - borrower_id: Khóa chính, tự tăng
+        - national_id: Số căn cước công dân, duy nhất
+        - name: Tên người mượn
+        - contact_info: Thông tin liên lạc
+        - address: Địa chỉ 
 
     
-    - thông tin mượn sách 
-        - mã phiếu mượn 
-        - Tên phiếu 
-        - ngày lập 
-        - ngày mượn sách 
-        - ngày trả sách 
-        - mã nhân viên lập phiếu
-        - mã người mượn 
-        - số lượng sách mượn 
-        - mã danh sách mượn
-        
 
+    - BorrowingRecords (Phiếu mượn sách)
+        - record_id: Khóa chính, tự tăng
+        - borrow_date: Ngày mượn sách
+        - return_date: Ngày trả sách
+        - employee_id: Mã nhân viên lập phiếu
+        - borrower_id: Mã người mượn (Khóa ngoại tham chiếu đến Borrowers)
 
-    - danh sách mượn 
-        - 
-        - mã sách 
-        - số lượng mượn 
+    - BorrowingDetails (Chi tiết mượn sách)
+        - detail_id: Khóa chính, tự tăng
+        - record_id: Mã phiếu mượn (Khóa ngoại tham chiếu đến BorrowingRecords)
+        - book_id: Mã sách
+        - quantity: Số lượng mượn
     
 ### thư viện
     - thư viện
