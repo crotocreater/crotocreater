@@ -60,6 +60,7 @@
         - return_date: Ngày trả sách
         - employee_id: Mã nhân viên lập phiếu
         - borrower_id: Mã người mượn (Khóa ngoại tham chiếu đến Borrowers)
+        - mã thư viện 
 
     - BorrowingDetails (Chi tiết mượn sách)
         - detail_id: Khóa chính, tự tăng
