@@ -85,155 +85,88 @@ Dưới đây là cách tối ưu hóa và thiết kế cơ sở dữ liệu qu�
 Bảng Thực Thể và Quan Hệ
 1. Bảng Sách (Books)
 ```sql
-Sao chép mã
-CREATE TABLE Books (
-    book_id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    category_id INT NOT NULL,
-    publication_year INT,
-    author VARCHAR(255),
-    edition INT,
-    publisher_id INT,
-    library_branch_id INT,
-    FOREIGN KEY (category_id) REFERENCES Categories(category_id),
-    FOREIGN KEY (publisher_id) REFERENCES Publishers(publisher_id),
-    FOREIGN KEY (library_branch_id) REFERENCES LibraryBranches(branch_id)
-);```
-2. Bảng Thể Loại Sách (Categories)
-```sql
-Sao chép mã
-CREATE TABLE Categories (
-    category_id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    total_books INT
-);```
-3. Bảng Nhà Xuất Bản (Publishers)
-```sql
-Sao chép mã
-CREATE TABLE Publishers (
-    publisher_id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    address VARCHAR(255)
-);```
-4. Bảng Nhân Viên (Employees)
-```sql
-Sao chép mã
-CREATE TABLE Employees (
-    employee_id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    position VARCHAR(50),
-    contact_info VARCHAR(255),
-    id_card_number VARCHAR(20),
-    address VARCHAR(255)
-);```
-5. Bảng Người Mượn (Borrowers)
-```sql
-Sao chép mã
-CREATE TABLE Borrowers (
-    borrower_id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    contact_info VARCHAR(255),
-    address VARCHAR(255),
-    date_of_birth DATE,
-    id_card_number VARCHAR(20)
-);```
-6. Bảng Phiếu Mượn Sách (BorrowingRecords)
-```sql
-Sao chép mã
-CREATE TABLE BorrowingRecords (
-    record_id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(255),
-    creation_date DATE,
-    borrow_date DATE,
-    return_date DATE,
-    employee_id INT,
-    borrower_id INT,
-    FOREIGN KEY (employee_id) REFERENCES Employees(employee_id),
-    FOREIGN KEY (borrower_id) REFERENCES Borrowers(borrower_id)
-);```
-7. Bảng Hóa Đơn Mượn (BorrowingInvoices)
-```sql
-Sao chép mã
-CREATE TABLE BorrowingInvoices (
-    invoice_id INT AUTO_INCREMENT PRIMARY KEY,
-    record_id INT,
-    total_books INT,
-    FOREIGN KEY (record_id) REFERENCES BorrowingRecords(record_id)
-);```
-8. Bảng Danh Sách Mượn (BorrowingList)
-```sql
-Sao chép mã
-CREATE TABLE BorrowingList (
-    list_id INT AUTO_INCREMENT PRIMARY KEY,
-    book_id INT,
-    quantity INT,
-    FOREIGN KEY (book_id) REFERENCES Books(book_id)
-);```
-9. Bảng Thư Viện (LibraryBranches)
-```sql
-Sao chép mã
-CREATE TABLE LibraryBranches (
-    branch_id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    address VARCHAR(255),
-    contact_info VARCHAR(255)
-);```
-10. Bảng Quan Hệ Thư Viện - Nhân Viên (LibraryBranchEmployees)
-```sql
-CREATE TABLE LibraryBranchEmployees (
-    branch_id INT,
-    employee_id INT,
-    salary DECIMAL(10, 2),
-    days_off INT,
-    PRIMARY KEY (branch_id, employee_id),
-    FOREIGN KEY (branch_id) REFERENCES LibraryBranches(branch_id),
-    FOREIGN KEY (employee_id) REFERENCES Employees(employee_id)
-);```
-11. Bảng Quan Hệ Thư Viện - Sách (LibraryBranchBooks)
-```sql
-Sao chép mã
-CREATE TABLE LibraryBranchBooks (
-    branch_id INT,
-    book_id INT,
-    available_quantity INT,
-    category_id INT,
-    PRIMARY KEY (branch_id, book_id),
-    FOREIGN KEY (branch_id) REFERENCES LibraryBranches(branch_id),
-    FOREIGN KEY (book_id) REFERENCES Books(book_id),
-    FOREIGN KEY (category_id) REFERENCES Categories(category_id)
-);```
-12. Bảng Quan Hệ Thư Viện - Thể Loại (LibraryBranchCategories)
-```sql
-Sao chép mã
-CREATE TABLE LibraryBranchCategories (
-    branch_id INT,
-    category_id INT,
-    total_quantity INT,
-    PRIMARY KEY (branch_id, category_id),
-    FOREIGN KEY (branch_id) REFERENCES LibraryBranches(branch_id),
-    FOREIGN KEY (category_id) REFERENCES Categories(category_id)
-);```
-13. Bảng Quan Hệ Thư Viện - Phiếu Mượn (LibraryBranchBorrowingRecords)
-```sql
-Sao chép mã
-CREATE TABLE LibraryBranchBorrowingRecords (
-    branch_id INT,
-    borrower_id INT,
-    record_id INT,
-    return_status BOOLEAN,
-    PRIMARY KEY (branch_id, borrower_id, record_id),
-    FOREIGN KEY (branch_id) REFERENCES LibraryBranches(branch_id),
-    FOREIGN KEY (borrower_id) REFERENCES Borrowers(borrower_id),
-    FOREIGN KEY (record_id) REFERENCES BorrowingRecords(record_id)
-);```
-Chỉ Mục (Indexing)
-Để tăng tốc độ truy vấn, chúng ta có thể tạo thêm các chỉ mục cho các bảng thường xuyên được truy vấn.
+CREATE DATABASE QLTV;
 
-Ví Dụ về Chỉ Mục
-```sql
-Sao chép mã
-CREATE INDEX idx_books_category ON Books(category_id);
-CREATE INDEX idx_books_publisher ON Books(publisher_id);
-CREATE INDEX idx_borrowing_records_employee ON BorrowingRecords(employee_id);
-CREATE INDEX idx_borrowing_records_borrower ON BorrowingRecords(borrower_id);
+
+-- CÁC MỐI QUAN HỆU CHỦ YẾU 
+-- THƯ VIỆN - NHÂN VIÊN 
+-- THƯ VIÊN - SÁCH 
+-- NGƯƠI MƯỢN - SÁCH 
+
+-- THƯ VIỆN VÀ NHÂN VIÊN 
+
+-- THƯ VIỆN 
+ CREATE TABLE THU_VIEN(
+	MA VARCHAR(10) PRIMARY KEY, 
+	TEN VARCHAR(50) NOT NULL,
+	TVCONTRACT VARCHAR(20) NOT NULL, 
+	ADRESSS VARCHAR(20) 
+);
+
+-- SÁCH 
+
+CREATE TABLE THELOAI(
+	MATHELOAI VARCHAR(20) PRIMARY KEY, 
+	TENTHELOAI VARCHAR(100) NOT NULL, 
+	SOLUONG INT CHECK(SOLUONG > 0)
+);
+
+CREATE TABLE NXB(
+		MANXB VARCHAR(20) PRIMARY KEY, 
+		TENNXB VARCHAR(100) NOT NULL, 
+		DIACHI VARCHAR(100), 
+		NXBCONTRACT VARCHAR(50),
+);
+CREATE TABLE SACH(
+    MASACH VARCHAR(20) PRIMARY KEY,
+    TENSACH VARCHAR(100) NOT NULL,
+    MATHELOAI VARCHAR(20) REFERENCES THELOAI(MATHELOAI),
+    NAMXUATBAN DATETIME CHECK (YEAR(NAMXUATBAN) BETWEEN 1500 AND 2024),
+    TACGIA VARCHAR(50),
+	LANTAIBAN INT CHECK(LANTAIBAN > 0 ),
+	MANXB VARCHAR(20) REFERENCES NXB(MANXB),
+	MATV VARCHAR(10) REFERENCES THU_VIEN(MA)
+);
+
+
+-- NHAN VIEN 
+CREATE TABLE NHANVIEN(
+    TENNV VARCHAR(50) NOT NULL,
+    MANV VARCHAR(20) PRIMARY KEY,
+	VITRILV VARCHAR(30),
+	INFORCONTRACT VARCHAR(50) NOT NULL, 
+	DIACHI VARCHAR(100) NOT NULL,
+	MATV VARCHAR(10) REFERENCES THU_VIEN(MA)
+	);
+
+
+-- NGUOI MUON
+CREATE TABLE NGUOI_MUON(
+	MA INT IDENTITY(1,1) PRIMARY KEY,
+    SCCCD VARCHAR(20) NOT NULL,
+    TENNGUOIMUON VARCHAR(50),
+	THONGTINLIENLAC VARCHAR(50) NOT NULL,
+    DIACHI VARCHAR(100) NOT NULL
+);
+
+
+CREATE TABLE PHIEUMUON(
+	MAPHIEU INT IDENTITY(1,1) PRIMARY KEY, 
+	NGAYMUON DATE NOT NULL, 
+	NGAYTRA DATE NOT NULL, 
+	NVLAP VARCHAR(20) REFERENCES NHANVIEN(MANV),
+	MANGUOIMUON INT REFERENCES NGUOI_MUON(MA),
+	MATV VARCHAR(10) REFERENCES THU_VIEN(MA),
+);
+
+
+
+CREATE TABLE DSMUON(
+	MAPHIEUMUON INT REFERENCES PHIEUMUON(MAPHIEU), 
+	MANGUOIMUON INT REFERENCES NGUOI_MUON(MA), 
+	MASACH VARCHAR(20) REFERENCES SACH(MASACH), 
+	SOLUONG INT CHECK(SOLUONG > 0),
+	PRIMARY KEY (MAPHIEUMUON, MANGUOIMUON)
+);
+
 ```
